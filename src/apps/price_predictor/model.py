@@ -11,28 +11,44 @@ __email__ = "zhien.zhang@uqconnect.edu.au"
 
 UNITS = 4
 DROPOUT = 0.2
+BATCH_SIZE = 64
 MODEL_PATH = "./model"
 
 
 class Model:
-    def __init__(self):
+    def __init__(self, ref_days: int, days_look_ahead: int):
         self.layers = None
+        self.ref_days = ref_days
+        self.days_look_ahead = days_look_ahead
+        self.train_stats = None
 
     def create_model(self):
         model = keras.Sequential()
-        model.add(keras.layers.LSTM(UNITS, input_shape=(SEQ_LEN - 1, 1)))
+        model.add(keras.layers.LSTM(UNITS, input_shape=(self.ref_days, 1), return_sequences=True))
+        model.add(keras.layers.Dropout(DROPOUT))
+        model.add(keras.layers.LSTM(UNITS, return_sequences=True))
+        model.add(keras.layers.Dropout(DROPOUT))
+        model.add(keras.layers.LSTM(UNITS, return_sequences=True))
         model.add(keras.layers.Dropout(DROPOUT))
         model.add(keras.layers.LSTM(UNITS))
-        model.add(keras.layers.Dropout(DROPOUT))
-        model.add(keras.layers.LSTM(UNITS))
-        model.add(keras.layers.Dropout(DROPOUT))
-        model.add(keras.layers.LSTM(UNITS))
-        model.add(keras.layers.Dense(units=5))
+        model.add(keras.layers.Dense(units=self.days_look_ahead))
         model.add(keras.layers.Activation('linear'))
 
         model.compile(optimizer="adagrad", loss="mean_squared_error")
 
         self.layers = model
+
+    def train(self, X_train, y_train, batch_size=BATCH_SIZE):
+        history = self.layers.fit(
+            X_train,
+            y_train,
+            epochs=50,
+            batch_size=batch_size,
+            shuffle=False,
+            validation_split=0.1
+        )
+
+        self.train_stats = history
 
     @staticmethod
     def load_model():

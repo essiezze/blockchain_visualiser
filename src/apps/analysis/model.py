@@ -4,13 +4,12 @@ The LSTM model to predict the price of cryptocurrencies
 """
 
 from tensorflow import keras
-from preprocess import SEQ_LEN
 
 __author__ = "Zhien Zhang"
 __email__ = "zhien.zhang@uqconnect.edu.au"
 
 UNITS = 4
-DROPOUT = 0.2
+DROPOUT = 0.3
 BATCH_SIZE = 64
 MODEL_PATH = "./model"
 
@@ -32,7 +31,7 @@ class Model:
         model.add(keras.layers.Dropout(DROPOUT))
         model.add(keras.layers.LSTM(UNITS))
         model.add(keras.layers.Dense(units=self.days_look_ahead))
-        model.add(keras.layers.Activation('linear'))
+        model.add(keras.layers.Activation('sigmoid'))
 
         model.compile(optimizer="adagrad", loss="mean_squared_error")
 
@@ -49,6 +48,9 @@ class Model:
         )
 
         self.train_stats = history
+
+    def validate(self, X_test, y_test):
+        return self.layers.evaluate(X_test, y_test)
 
     @staticmethod
     def load_model():

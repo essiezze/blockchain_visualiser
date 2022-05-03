@@ -20,6 +20,7 @@ class Preprocessor:
         self.ref_days = ref_days                # the number of days in the past used to make prediction
         self.train_split = train_split          # the percentage of training data, e.g. 0.8
         self.days_look_ahead = days_look_ahead  # the number of days to predict
+        self.scaler = MinMaxScaler()
 
     def to_sequences(self, data):
         d = []
@@ -52,9 +53,8 @@ class Preprocessor:
         df = raw_history_data.sort_values("Date")
 
         # normalise the close price
-        scaler = MinMaxScaler()
         close_price = df.Close.values.reshape(-1, 1)
-        scaled_close = scaler.fit_transform(close_price)
+        scaled_close = self.scaler.fit_transform(close_price)
 
         # remove nan rows
         scaled_close = scaled_close[~np.isnan(scaled_close)]

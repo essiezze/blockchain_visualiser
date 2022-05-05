@@ -4,3 +4,4 @@ matplotlib==3.5.1
 tensorflow==2.8.0
 scikit-learn==1.0.2
 flask-sqlalchemy==2.5.1
+plotly==5.7.0

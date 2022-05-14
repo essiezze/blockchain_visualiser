@@ -25,7 +25,7 @@ FULL_NAMES = {
 all = load_from_data_folder_all()
 
 
-def init_dashborad(server):
+def init_price_dashborad(server):
     dash_app = Dash(server=server, routes_pathname_prefix='/price/', external_stylesheets=[dbc.themes.BOOTSTRAP])
 
     available_coins = all["Coin"].unique()

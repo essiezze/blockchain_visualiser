@@ -19,6 +19,7 @@ LOOK_AHEAD = 1
 
 
 DATA_FOLDER = "apps/analysis/.data"
+DATE_FORMAT = "%Y-%m-%d"
 
 
 class Preprocessor:
@@ -78,7 +79,7 @@ class Preprocessor:
     def get_prediction_input(self):
         df = {
             "Date": self.raw_data["Date"][-self.ref_days:],
-            "Close Price": self.normed_close[-self.ref_days:],
+            "Close": self.normed_close[-self.ref_days:].flatten(),
             "Type": ["Actual"] * self.ref_days
         }
         return pd.DataFrame(df)

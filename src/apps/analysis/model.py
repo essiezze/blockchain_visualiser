@@ -27,24 +27,26 @@ class Model:
         model.add(keras.layers.Dropout(DROPOUT))
         model.add(keras.layers.LSTM(UNITS, return_sequences=True))
         model.add(keras.layers.Dropout(DROPOUT))
-        model.add(keras.layers.LSTM(UNITS, return_sequences=True))
-        model.add(keras.layers.Dropout(DROPOUT))
         model.add(keras.layers.LSTM(UNITS))
         model.add(keras.layers.Dense(units=self.days_look_ahead))
         model.add(keras.layers.Activation('sigmoid'))
 
-        model.compile(optimizer="adagrad", loss="mean_squared_error")
+        optimizer = keras.optimizers.Adam(learning_rate=0.0001)
+        model.compile(optimizer=optimizer, loss="mean_squared_error")
 
         self.layers = model
 
-    def train(self, X_train, y_train, batch_size=BATCH_SIZE):
+    def train(self, X_train, y_train,
+              batch_size=BATCH_SIZE,
+              validation_split=0.1,
+              epochs=25):
         history = self.layers.fit(
             X_train,
             y_train,
-            epochs=50,
+            epochs=epochs,
             batch_size=batch_size,
             shuffle=False,
-            validation_split=0.1
+            validation_split=validation_split
         )
 
         self.train_stats = history

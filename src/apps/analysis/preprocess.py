@@ -116,3 +116,12 @@ def load_from_data_folder_all():
         merged.append(df)
 
     return pd.concat(merged)
+
+
+def get_price_data_path(crypto: str):
+    return os.path.join(DATA_FOLDER, f"{crypto}-USD.csv")
+
+
+def read_price_data(crypto: str):
+    path = get_price_data_path(crypto)
+    return pd.read_csv(path, parse_dates=["Date"])

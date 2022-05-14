@@ -131,4 +131,3 @@ class Model:
         with open(output_path, "wb") as fp:
             dump(model, fp)
 
-

@@ -4,8 +4,8 @@ Train the predict model with historical data and predict the price 15 days ahead
 """
 
 import argparse
-from model import Model
-from preprocess import *
+from apps.analysis.model import Model
+from apps.analysis.preprocess import *
 import matplotlib.pyplot as plt
 import seaborn as sns
 

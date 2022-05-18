@@ -3,7 +3,6 @@
 The LSTM model to predict the price of cryptocurrencies
 """
 
-from preprocess import DATE_FORMAT
 import os.path
 from datetime import datetime, timedelta
 import numpy as np

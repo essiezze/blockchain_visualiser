@@ -22,7 +22,7 @@ def init_pred_dashborad(server):
     dash_app = Dash(server=server, routes_pathname_prefix='/prediction/', external_stylesheets=[dbc.themes.BOOTSTRAP])
 
     dash_app.layout = html.Div([
-        html.H3("15 Days Look Ahead for Cryptocurrency Close Price"),
+        html.H3("15-Day Look Ahead for Cryptocurrency Close Price"),
         html.Br(),
 
         dbc.Row([
